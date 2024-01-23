@@ -1,0 +1,52 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Style {
+  id       Int         @id @default(autoincrement())
+  name     String      @unique
+  img      StyleImage?
+  Movement Movement[]
+}
+
+model StyleImage {
+  id          Int      @id @default(autoincrement())
+  altText     String
+  contentType String
+  blob        Bytes
+  styleId     Int      @unique
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  style       Style    @relation(fields: [styleId], references: [id], onDelete: Cascade)
+
+  @@index([styleId])
+}
+
+model Movement {
+  id            Int             @id @default(autoincrement())
+  name          String
+  content       String?
+  styleId       Int
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  style         Style           @relation(fields: [styleId], references: [id], onDelete: Cascade)
+  MovementImage MovementImage[]
+}
+
+model MovementImage {
+  id          Int      @id @default(autoincrement())
+  altText     String
+  contentType String
+  blob        Bytes
+  movementId  Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  movement    Movement @relation(fields: [movementId], references: [id], onDelete: Cascade)
+
+  @@index([movementId])
+}
