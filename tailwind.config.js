@@ -10,6 +10,18 @@ export default {
       }
     },
   },
+  daisyui: {
+    themes: [
+      {
+        light: {
+          primary: "#343232",
+          secondary: "#F5F5F5",
+          "primary-content": "#F5F5F5",
+          "secondary-content": "#343232",
+        }
+      }
+    ]
+  },
   plugins: [require("daisyui")],
 }
 
