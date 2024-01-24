@@ -39,7 +39,7 @@ async function seed(){
 			}
 		})
 	}
-	console.timeEnd(`👤 Created ${totalStyles} users...`)
+	console.timeEnd(`🕺 Created ${totalStyles} styles...`)
 	console.timeEnd(`🌱 Database has been seeded`)
 }
 

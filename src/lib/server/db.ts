@@ -1,7 +1,5 @@
 import { PrismaClient } from '@prisma/client'
 
-console.log("executing db.ts")
-console.log(global)
 export const prisma = new PrismaClient()
 
 async function main() {
