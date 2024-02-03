@@ -37,6 +37,7 @@ async function seedStyles() {
       select: { id: true },
       data: {
         name: styles[i % totalStyles],
+        slug: toUrlFriendlySubpath(styles[i % totalStyles]),
         img: { create: stylesImages[i % totalStyles] },
         movements: {
           create: Array.from({ length: faker.number.int({ min: 2, max: 5 }) }).map(() => ({
@@ -59,7 +60,13 @@ async function seedStyles() {
   console.timeEnd(`🌱 Database has been seeded`)
 }
 
-async function seedMovements(styleIds: Array<number>) {}
+export function toUrlFriendlySubpath(s: string) {
+  return s
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, '-')
+    .replace(/[^a-z0-9\-_]/g, '')
+}
 
 async function seed() {
   console.log('🌱 Seeding...')

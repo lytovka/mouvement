@@ -10,6 +10,7 @@ datasource db {
 model Style {
   id        Int         @id @default(autoincrement())
   name      String      @unique
+  slug      String      @unique
   img       StyleImage?
   movements Movement[]
 }
