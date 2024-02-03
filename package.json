@@ -43,7 +43,8 @@
   },
   "type": "module",
   "dependencies": {
-    "@prisma/client": "^5.8.1"
+    "@prisma/client": "^5.8.1",
+    "sharp": "^0.33.2"
   },
   "prisma": {
     "seed": "npx tsx prisma/seed.ts"

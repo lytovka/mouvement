@@ -1,6 +1,5 @@
 import { prisma } from '$lib/server/db'
 import { error, type RequestHandler } from '@sveltejs/kit'
-import sharp from 'sharp'
 
 export const GET = (async ({ params }) => {
   if (!params.id) {
@@ -17,15 +16,10 @@ export const GET = (async ({ params }) => {
     error(404, 'image not found')
   }
 
-  // Assuming `image.blob` is a Buffer containing the WebP image data
-  const singleFrameBuffer = await sharp(image.blob)
-    .png()
-    .toBuffer();
-  
-  return new Response(singleFrameBuffer.buffer, {
+  return new Response(image.blob, {
     headers: {
       'Content-Type': image.contentType,
-      // 'Content-Length': singleFrameBuffer.buffer.byteLength(image.blob).toString(),
+      'Content-Length': Buffer.byteLength(image.blob).toString(),
       'Cache-Control': 'public, max-age=31536000, immutable'
     }
   })

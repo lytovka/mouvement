@@ -17,7 +17,6 @@ export const GET = (async ({ params }) => {
     error(404, 'image not found')
   }
 
-  // Assuming `image.blob` is a Buffer containing the WebP image data
   const singleFrameBuffer = await sharp(image.blob)
     .png()
     .toBuffer();
@@ -30,3 +29,4 @@ export const GET = (async ({ params }) => {
     }
   })
 }) satisfies RequestHandler
+

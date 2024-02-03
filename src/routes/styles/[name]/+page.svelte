@@ -12,7 +12,7 @@
     {#each data.movements as movement}
       <HorizontalCard
         title={movement.name}
-        imgSrc={`/api/movement-images/${movement.images[0].id}`}
+        imgSrc={`/api/movement-images/${movement.images[0].id}/png`}
         url={`/styles/${movement.id}`}
       />
     {/each}
