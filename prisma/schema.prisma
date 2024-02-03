@@ -8,10 +8,10 @@ datasource db {
 }
 
 model Style {
-  id       Int         @id @default(autoincrement())
-  name     String      @unique
-  img      StyleImage?
-  Movement Movement[]
+  id        Int         @id @default(autoincrement())
+  name      String      @unique
+  img       StyleImage?
+  movements Movement[]
 }
 
 model StyleImage {
@@ -28,14 +28,14 @@ model StyleImage {
 }
 
 model Movement {
-  id            Int             @id @default(autoincrement())
-  name          String
-  content       String?
-  styleId       Int
-  createdAt     DateTime        @default(now())
-  updatedAt     DateTime        @updatedAt
-  style         Style           @relation(fields: [styleId], references: [id], onDelete: Cascade)
-  MovementImage MovementImage[]
+  id        Int             @id @default(autoincrement())
+  name      String
+  content   String?
+  styleId   Int
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+  style     Style           @relation(fields: [styleId], references: [id], onDelete: Cascade)
+  images    MovementImage[]
 }
 
 model MovementImage {
