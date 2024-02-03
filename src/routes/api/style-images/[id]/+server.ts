@@ -6,11 +6,7 @@ export const GET = (async ({ params }) => {
     error(400, 'id is missing')
   }
 
-  const id = parseInt(params.id)
-  if (isNaN(id)) {
-    error(400, 'Invalid number')
-  }
-  const image = await prisma.styleImage.findUnique({ where: { id } })
+  const image = await prisma.styleImage.findUnique({ where: { id: params.id } })
 
   if (!image) {
     error(404, 'image not found')

@@ -8,7 +8,7 @@ datasource db {
 }
 
 model Style {
-  id        Int         @id @default(autoincrement())
+  id        String      @id @default(cuid())
   name      String      @unique
   slug      String      @unique
   img       StyleImage?
@@ -16,11 +16,11 @@ model Style {
 }
 
 model StyleImage {
-  id          Int      @id @default(autoincrement())
+  id          String   @id @default(cuid())
   altText     String
   contentType String
   blob        Bytes
-  styleId     Int      @unique
+  styleId     String   @unique
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   style       Style    @relation(fields: [styleId], references: [id], onDelete: Cascade)
@@ -29,22 +29,24 @@ model StyleImage {
 }
 
 model Movement {
-  id        Int             @id @default(autoincrement())
+  id        String          @id @default(cuid())
   name      String
   content   String?
-  styleId   Int
+  styleId   String          
   createdAt DateTime        @default(now())
   updatedAt DateTime        @updatedAt
   style     Style           @relation(fields: [styleId], references: [id], onDelete: Cascade)
   images    MovementImage[]
+
+  @@index([styleId])
 }
 
 model MovementImage {
-  id          Int      @id @default(autoincrement())
+  id          String      @id @default(cuid())
   altText     String
   contentType String
   blob        Bytes
-  movementId  Int
+  movementId  String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   movement    Movement @relation(fields: [movementId], references: [id], onDelete: Cascade)
