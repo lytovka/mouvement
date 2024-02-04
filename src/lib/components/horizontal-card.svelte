@@ -4,11 +4,11 @@
   export let url: string
 </script>
 
-<a href={url} aria-label="Description of the link" class=" w-96">
-  <div class="flex flex-col bg-base-100">
+<a href={url} aria-label="Description of the link">
+  <div class="relative flex flex-col bg-gray-900 shadow-md bg-clip-border rounded-xl">
     <figure><img class="rounded-t-xl" src={imgSrc} alt="Shoes" /></figure>
     <div class="px-4 py-4 bg-primary rounded-b-xl">
-      <p class="font-bold text-primary-content">{title}</p>
+      <p class="font-bold text-gray-50">{title}</p>
     </div>
   </div>
 </a>

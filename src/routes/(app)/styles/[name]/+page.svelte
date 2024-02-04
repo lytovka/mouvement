@@ -7,8 +7,8 @@
   export let data: Awaited<ReturnType<typeof load>>
 </script>
 
-<div class="mt-4">
-  <ul class="flex flex-col md:flex-row justify-center gap-4">
+<div class="px-8 py-4">
+  <ul class="grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-3">
     {#each data.movements as movement}
       <HorizontalCard
         title={movement.name}
