@@ -7,7 +7,7 @@ export const load = (async ({ params }) => {
       id: true,
       name: true,
       content: true,
-      images: { select: { id: true, altText: true } }
+      images: { select: { id: true, altText: true }, take: 1, orderBy: { createdAt: 'asc' } }
     },
     where: { style: { slug: params.name } }
   })

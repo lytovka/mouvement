@@ -18,10 +18,8 @@ export const GET = (async ({ params }) => {
   }
 
   // Assuming `image.blob` is a Buffer containing the WebP image data
-  const singleFrameBuffer = await sharp(image.blob)
-    .png()
-    .toBuffer();
-  
+  const singleFrameBuffer = await sharp(image.blob).png().toBuffer()
+
   return new Response(singleFrameBuffer.buffer, {
     headers: {
       'Content-Type': image.contentType,

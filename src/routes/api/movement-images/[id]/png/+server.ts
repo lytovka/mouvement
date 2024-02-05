@@ -13,10 +13,8 @@ export const GET = (async ({ params }) => {
     error(404, 'image not found')
   }
 
-  const singleFrameBuffer = await sharp(image.blob)
-    .png()
-    .toBuffer();
-  
+  const singleFrameBuffer = await sharp(image.blob).png().toBuffer()
+
   return new Response(singleFrameBuffer.buffer, {
     headers: {
       'Content-Type': image.contentType,
@@ -25,4 +23,3 @@ export const GET = (async ({ params }) => {
     }
   })
 }) satisfies RequestHandler
-

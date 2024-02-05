@@ -11,7 +11,7 @@ export const GET = (async ({ params }) => {
   if (!image) {
     error(404, 'image not found')
   }
-  
+
   return new Response(image.blob, {
     headers: {
       'Content-Type': image.contentType,
