@@ -14,7 +14,6 @@
     event.preventDefault()
     const { href } = event.currentTarget
     const result = await preloadData(href)
-    console.log('preloaded data')
     if (result.type === 'loaded' && result.status === 200) {
       pushState(href, { movement: result.data })
     } else {
@@ -24,16 +23,15 @@
 
   //@ts-expect-error add `movement` to state
   $: if ($page.state.movement) {
-    console.log('opened!!!')
     dialogOpen = true
   } else {
     dialogOpen = false
-    console.log('closed!!!')
   }
 </script>
 
 <div class="px-8 py-4">
-  <ul class="grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-3">
+  <a href="../">Back</a>
+  <ul class="grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-[repeat(3,_minmax(250px,_1fr))]">
     {#each data.movements as movement}
       <div class="relative flex flex-col bg-gray-900 shadow-md bg-clip-border rounded-xl">
         <figure>
@@ -44,11 +42,13 @@
           >
             <Play />
           </a>
-          <img
-            class="rounded-t-xl"
-            src={`/api/movement-images/${movement.images[0].id}/png`}
-            alt={movement.images[0].altText}
-          />
+          <div class="md:h-64">
+            <img
+              class="object-cover w-full h-full rounded-t-xl"
+              src={`/api/movement-images/${movement.images[0].id}/png`}
+              alt={movement.images[0].altText}
+            />
+          </div>
         </figure>
         <div class="px-4 py-4 bg-primary rounded-b-xl">
           <p class="font-bold text-gray-50">{movement.name}</p>

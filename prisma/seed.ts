@@ -26,14 +26,21 @@ async function seedStyles() {
 
   const movementImages = await Promise.all([
     img({
-      altText: 'Dance 1',
+      altText: 'Meme dance',
       filepath: './tests/fixtures/images/movements/dance1.webp'
-    })
+    }),
+    img({
+      altText: 'Seinfeld dance 1',
+      filepath: './tests/fixtures/images/movements/dance2.webp'
+    }),
+    img({
+      altText: 'Seinfeld dance 2',
+      filepath: './tests/fixtures/images/movements/dance3.webp'
+    }),
   ])
 
-  const stylesIds: Array<number> = []
   for (let i = 0; i < totalStyles; i++) {
-    const { id } = await prisma.style.create({
+    await prisma.style.create({
       select: { id: true },
       data: {
         name: styles[i % totalStyles],
@@ -46,15 +53,14 @@ async function seedStyles() {
             images: {
               // TODO: use random length for movement varations
               create: Array.from({ length: 1 }).map(() => {
-                return movementImages[0]
+                const imgNumber = faker.number.int({ min: 0, max: movementImages.length - 1 })
+                return movementImages[imgNumber]
               })
             }
           }))
         }
       }
     })
-
-    stylesIds.push(id)
   }
   console.timeEnd(`🕺 Created ${totalStyles} styles...`)
   console.timeEnd(`🌱 Database has been seeded`)
