@@ -30,8 +30,8 @@
 </script>
 
 <div class="px-8 py-4">
-  <a href="../">Back</a>
-  <ul class="grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-[repeat(3,_minmax(250px,_1fr))]">
+  <a href="../" class="mb-8">Back</a>
+  <ul class="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-[repeat(3,_minmax(250px,_1fr))]">
     {#each data.movements as movement}
       <div class="relative flex flex-col bg-gray-900 shadow-md bg-clip-border rounded-xl">
         <figure>
@@ -66,7 +66,9 @@
     }
   }}
 >
-  <Dialog.Content>
-    <MovementPage data={$page.state.movement} />
-  </Dialog.Content>
+  <Dialog.Portal>
+    <Dialog.Content class="h-min md:min-w-[700px]">
+      <MovementPage containerStyles="block p-0" data={$page.state.movement} />
+    </Dialog.Content>
+  </Dialog.Portal>
 </Dialog.Root>
