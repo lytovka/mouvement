@@ -77,17 +77,17 @@
       <a
         href={`${$page.url.pathname}/${movement.id}`}
         on:click={onImageClick}
-        class="relative flex flex-col bg-primary shadow-md bg-clip-border rounded-xl"
+        class="group relative flex flex-col bg-primary shadow-md bg-clip-border rounded-xl"
       >
-        <figure>
+        <figure class="relative">
           <div
-            class="flex justify-center items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-gray-100/60"
+            class="z-10 flex justify-center items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-gray-100/60"
           >
             <Play />
           </div>
-          <div class="md:h-64 figure-container">
+          <div class="md:h-64 figure-container overflow-hidden rounded-t-xl">
             <img
-              class="object-cover w-full h-full rounded-t-xl"
+              class="h-auto w-auto object-cover transition-all ease-in-out duration-500 group-hover:scale-105"
               src={`/api/movement-images/${movement.images[0].id}/png`}
               loading="lazy"
               alt={movement.images[0].altText}
