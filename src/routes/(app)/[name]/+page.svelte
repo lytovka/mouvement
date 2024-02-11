@@ -4,7 +4,7 @@
   import { Play } from 'lucide-svelte'
   import { page } from '$app/stores'
   import { goto, preloadData, pushState } from '$app/navigation'
-  import {throttle} from "$lib/utils/misc"
+  import { throttle } from '$lib/utils/misc'
   import MovementPage from './[movementId]/+page.svelte'
 
   export let data: Awaited<ReturnType<typeof load>>
@@ -24,43 +24,41 @@
     }
   }
 
-  async function loadMorePosts(){
+  async function loadMorePosts() {
     console.log(isMoreDataFetching)
-    if(isMoreDataFetching) return
+    if (isMoreDataFetching) return
     isMoreDataFetching = true
 
     const cursor = data.movements.at(-1)?.id
-    if(!cursor){ 
+    if (!cursor) {
       isMoreDataFetching = false
       return
     }
 
-    try{
-      const u = new URL(`${$page.url.origin}/api/movements`) 
-      u.searchParams.set("cursor", cursor)
-      const response = await fetch(u, {method: "GET"})
+    try {
+      const u = new URL(`${$page.url.origin}/api/movements`)
+      u.searchParams.set('cursor', cursor)
+      const response = await fetch(u, { method: 'GET' })
       const newData = await response.json()
       data.movements = [...data.movements, ...newData]
-    }
-    catch(error){
+    } catch (error) {
       console.error(error)
-    }
-    finally{
+    } finally {
       isMoreDataFetching = false
     }
   }
 
   const throttledHandleScroll = throttle(function handleScroll() {
-    console.log("inside throttled")
-    const threshold = 500; // How close to the bottom you must be to load more posts (in pixels)
-    const position = scrollY + innerHeight; // How far the user has scrolled
-    const bottom = document.body.scrollHeight; // The total scrollable height
-    console.log(threshold, position, bottom) 
+    console.log('inside throttled')
+    const threshold = 500 // How close to the bottom you must be to load more posts (in pixels)
+    const position = scrollY + innerHeight // How far the user has scrolled
+    const bottom = document.body.scrollHeight // The total scrollable height
+    console.log(threshold, position, bottom)
     if (position + threshold >= bottom) {
-      loadMorePosts();
+      loadMorePosts()
       return
     }
-    console.log("skipping")
+    console.log('skipping')
   }, 2000)
 
   //@ts-expect-error add `movement` to state
@@ -72,7 +70,6 @@
 
   $: innerHeight = 0
   $: scrollY = 0
-
 </script>
 
 <svelte:window bind:innerHeight bind:scrollY on:scroll={throttledHandleScroll} />
@@ -81,15 +78,17 @@
   <a href="../" class="mb-8">Back</a>
   <ul class="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-[repeat(3,_minmax(250px,_1fr))]">
     {#each data.movements as movement}
-      <div class="relative flex flex-col bg-gray-900 shadow-md bg-clip-border rounded-xl">
+      <a
+        href={`${$page.url.pathname}/${movement.id}`}
+        on:click={onImageClick}
+        class="relative flex flex-col bg-primary shadow-md bg-clip-border rounded-xl"
+      >
         <figure>
-          <a
-            href={`${$page.url.pathname}/${movement.id}`}
-            on:click={onImageClick}
+          <div
             class="flex justify-center items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-gray-100/60"
           >
             <Play />
-          </a>
+          </div>
           <div class="md:h-64">
             <img
               class="object-cover w-full h-full rounded-t-xl"
@@ -101,7 +100,7 @@
         <div class="px-4 py-4 bg-primary rounded-b-xl">
           <p class="font-bold text-gray-50">{movement.name}</p>
         </div>
-      </div>
+      </a>
     {/each}
   </ul>
 </div>

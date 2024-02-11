@@ -1,5 +1,5 @@
-import { prisma } from "$lib/server/db"
-import { json, type RequestHandler } from "@sveltejs/kit"
+import { prisma } from '$lib/server/db'
+import { json, type RequestHandler } from '@sveltejs/kit'
 
 const PAGE_LIMIT = 20
 
@@ -19,4 +19,3 @@ export const GET = (async ({ params, url }) => {
 
   return json(movements)
 }) satisfies RequestHandler
-

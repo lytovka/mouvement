@@ -66,13 +66,16 @@ export function toUrlFriendlySubpath(s: string) {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type TODO = any
 
-export function throttle<T extends TODO[]>(func: (...args: T) => void, limit: number): (...args: T) => void {
-  let inThrottle: boolean;
-  return function(this: TODO, ...args: T) {
+export function throttle<T extends TODO[]>(
+  func: (...args: T) => void,
+  limit: number
+): (...args: T) => void {
+  let inThrottle: boolean
+  return function (this: TODO, ...args: T) {
     if (!inThrottle) {
-      func.apply(this, args);
-      inThrottle = true;
-      setTimeout(() => (inThrottle = false), limit);
+      func.apply(this, args)
+      inThrottle = true
+      setTimeout(() => (inThrottle = false), limit)
     }
-  };
+  }
 }
