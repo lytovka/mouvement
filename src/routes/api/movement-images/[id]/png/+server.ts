@@ -2,8 +2,7 @@ import { prisma } from '$lib/server/db'
 import { error, type RequestHandler } from '@sveltejs/kit'
 import sharp from 'sharp'
 
-export const GET = (async ({ params, request }) => {
-  console.log(request.headers.get("user-agent"))
+export const GET = (async ({ params }) => {
   if (!params.id) {
     error(400, 'id is missing')
   }

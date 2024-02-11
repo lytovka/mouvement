@@ -4,10 +4,13 @@
   import { Play } from 'lucide-svelte'
   import { page } from '$app/stores'
   import { goto, preloadData, pushState } from '$app/navigation'
+  import {throttle} from "$lib/utils/misc"
   import MovementPage from './[movementId]/+page.svelte'
 
   export let data: Awaited<ReturnType<typeof load>>
+
   let dialogOpen = false
+  let isMoreDataFetching = false
 
   const onImageClick = async (event: MouseEvent & { currentTarget: HTMLAnchorElement }) => {
     if (event.metaKey || event.ctrlKey) return
@@ -21,13 +24,58 @@
     }
   }
 
+  async function loadMorePosts(){
+    if(isMoreDataFetching) return
+    isMoreDataFetching = true
+
+    const cursor = data.movements.at(-1)?.id
+    if(!cursor){ 
+      isMoreDataFetching = false
+      return
+    }
+
+    try{
+      const u = new URL(`${$page.url.origin}/api/movements`) 
+      u.searchParams.set("cursor", cursor)
+      const response = await fetch(u, {method: "GET"})
+      const newData = await response.json()
+      data.movements = [...data.movements, ...newData]
+    }
+    catch(error){
+      console.error(error)
+    }
+    finally{
+      isMoreDataFetching = false
+    }
+  }
+
+  const throttledHandleScroll = throttle(function handleScroll() {
+    const threshold = 350; // How close to the bottom you must be to load more posts (in pixels)
+    const position = scrollY + innerHeight; // How far the user has scrolled
+    const bottom = document.body.scrollHeight; // The total scrollable height
+
+    if (position + threshold >= bottom) {
+      loadMorePosts();
+    }
+  }, 2000)
+
   //@ts-expect-error add `movement` to state
   $: if ($page.state.movement) {
     dialogOpen = true
   } else {
     dialogOpen = false
   }
+
+  $: outerWidth = 0
+  $: innerWidth = 0
+  $: outerHeight = 0
+  $: innerHeight = 0
+  $: scrollY = 0
+
 </script>
+
+
+<svelte:window bind:innerWidth bind:outerWidth bind:innerHeight bind:outerHeight bind:scrollY on:scroll={throttledHandleScroll} />
 
 <div class="px-8 py-4">
   <a href="../" class="mb-8">Back</a>

@@ -62,3 +62,17 @@ export function toUrlFriendlySubpath(s: string) {
     .replace(/\s+/g, '-')
     .replace(/[^a-z0-9\-_]/g, '')
 }
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type TODO = any
+
+export function throttle<T extends TODO[]>(func: (...args: T) => void, limit: number): (...args: T) => void {
+  let inThrottle: boolean;
+  return function(this: TODO, ...args: T) {
+    if (!inThrottle) {
+      func.apply(this, args);
+      inThrottle = true;
+      setTimeout(() => (inThrottle = false), limit);
+    }
+  };
+}

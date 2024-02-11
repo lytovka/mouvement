@@ -1,15 +1,11 @@
-import { prisma } from '$lib/server/db'
 import type { PageServerLoad } from './$types'
 
-export const load = (async ({ params }) => {
-  const movements = await prisma.movement.findMany({
-    select: {
-      id: true,
-      name: true,
-      content: true,
-      images: { select: { id: true, altText: true }, take: 1, orderBy: { createdAt: 'asc' } }
-    },
-    where: { style: { slug: params.name } }
-  })
-  return { movements }
+export const load = (async ({ url, fetch }) => {
+  const u = new URL(`${url.origin}/api/movements`)
+
+  const cursor = url.searchParams.get('cursor')
+  cursor && u.searchParams.set("cursor", cursor)
+
+  const response = await fetch(u.toString(), {method: "GET"})
+  return { movements: await response.json() }
 }) satisfies PageServerLoad
