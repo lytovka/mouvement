@@ -25,6 +25,7 @@
   }
 
   async function loadMorePosts(){
+    console.log(isMoreDataFetching)
     if(isMoreDataFetching) return
     isMoreDataFetching = true
 
@@ -50,13 +51,16 @@
   }
 
   const throttledHandleScroll = throttle(function handleScroll() {
-    const threshold = 350; // How close to the bottom you must be to load more posts (in pixels)
+    console.log("inside throttled")
+    const threshold = 500; // How close to the bottom you must be to load more posts (in pixels)
     const position = scrollY + innerHeight; // How far the user has scrolled
     const bottom = document.body.scrollHeight; // The total scrollable height
-
+    console.log(threshold, position, bottom) 
     if (position + threshold >= bottom) {
       loadMorePosts();
+      return
     }
+    console.log("skipping")
   }, 2000)
 
   //@ts-expect-error add `movement` to state
@@ -66,16 +70,12 @@
     dialogOpen = false
   }
 
-  $: outerWidth = 0
-  $: innerWidth = 0
-  $: outerHeight = 0
   $: innerHeight = 0
   $: scrollY = 0
 
 </script>
 
-
-<svelte:window bind:innerWidth bind:outerWidth bind:innerHeight bind:outerHeight bind:scrollY on:scroll={throttledHandleScroll} />
+<svelte:window bind:innerHeight bind:scrollY on:scroll={throttledHandleScroll} />
 
 <div class="px-8 py-4">
   <a href="../" class="mb-8">Back</a>
