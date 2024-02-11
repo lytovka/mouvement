@@ -21,7 +21,6 @@ export const load = (async ({ url, fetch }) => {
 
   const result = MovementsResultSchema.safeParse(await movementsResponse.json())
   if (!result.success) {
-    console.log(result.error)
     return error(400, result.error.message)
   }
 

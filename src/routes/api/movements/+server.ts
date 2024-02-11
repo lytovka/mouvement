@@ -1,7 +1,7 @@
 import { prisma } from '$lib/server/db'
 import { json, type RequestHandler } from '@sveltejs/kit'
 
-const PAGE_LIMIT = 20
+const PAGE_LIMIT = 10
 
 export const GET = (async ({ params, url }) => {
   const cursor = url.searchParams.get('cursor')

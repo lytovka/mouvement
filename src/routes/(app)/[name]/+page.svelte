@@ -25,7 +25,6 @@
   }
 
   async function loadMorePosts() {
-    console.log(isMoreDataFetching)
     if (isMoreDataFetching) return
     isMoreDataFetching = true
 
@@ -49,16 +48,13 @@
   }
 
   const throttledHandleScroll = throttle(function handleScroll() {
-    console.log('inside throttled')
     const threshold = 500 // How close to the bottom you must be to load more posts (in pixels)
     const position = scrollY + innerHeight // How far the user has scrolled
     const bottom = document.body.scrollHeight // The total scrollable height
-    console.log(threshold, position, bottom)
     if (position + threshold >= bottom) {
       loadMorePosts()
       return
     }
-    console.log('skipping')
   }, 2000)
 
   //@ts-expect-error add `movement` to state
@@ -74,7 +70,7 @@
 
 <svelte:window bind:innerHeight bind:scrollY on:scroll={throttledHandleScroll} />
 
-<div class="px-8 py-4">
+<div class="px-8 py-4 md:container md:mx-auto">
   <a href="../" class="mb-8">Back</a>
   <ul class="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-[repeat(3,_minmax(250px,_1fr))]">
     {#each data.movements as movement}
@@ -89,10 +85,11 @@
           >
             <Play />
           </div>
-          <div class="md:h-64">
+          <div class="md:h-64 figure-container">
             <img
               class="object-cover w-full h-full rounded-t-xl"
               src={`/api/movement-images/${movement.images[0].id}/png`}
+              loading="lazy"
               alt={movement.images[0].altText}
             />
           </div>
