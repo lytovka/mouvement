@@ -37,6 +37,10 @@ async function seedStyles() {
       altText: 'Seinfeld dance 2',
       filepath: './tests/fixtures/images/movements/dance3.webp'
     }),
+    img({
+      altText: 'Ivan Dance',
+      filepath: './tests/fixtures/images/movements/dance4.webp'
+    })
   ])
 
   for (let i = 0; i < totalStyles; i++) {
@@ -47,7 +51,7 @@ async function seedStyles() {
         slug: toUrlFriendlySubpath(styles[i % totalStyles]),
         img: { create: stylesImages[i % totalStyles] },
         movements: {
-          create: Array.from({ length: faker.number.int({ min: 2, max: 5 }) }).map(() => ({
+          create: Array.from({ length: faker.number.int({ min: 10, max: 100 }) }).map(() => ({
             name: faker.lorem.words({ min: 1, max: 6 }),
             content: faker.lorem.paragraphs({ min: 1, max: 3 }),
             images: {
