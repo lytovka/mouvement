@@ -18,5 +18,5 @@ export const load = (async ({ url, fetch }) => {
     return error(400, result.error.message)
   }
 
-  return { movements: result.data }
+  return result.data
 }) satisfies PageLoad

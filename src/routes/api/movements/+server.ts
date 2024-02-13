@@ -8,7 +8,7 @@ export const GET = (async ({ params, url }) => {
   const q = url.searchParams.get('q')
 
   const movements = await prisma.movement.findMany({
-    take: PAGE_LIMIT,
+    take: PAGE_LIMIT + 1,
     cursor: cursor ? { id: cursor } : undefined,
     select: {
       id: true,
@@ -18,5 +18,6 @@ export const GET = (async ({ params, url }) => {
     },
     where: { style: { slug: params.name }, name: q ? { startsWith: q } : undefined }
   })
-  return json(movements)
+
+  return json({ isMore: movements.length > PAGE_LIMIT, movements })
 }) satisfies RequestHandler

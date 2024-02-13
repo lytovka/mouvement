@@ -9,6 +9,7 @@
   import type { load } from './+page'
 
   export let data: Awaited<ReturnType<typeof load>>
+  console.log(data)
 
   let dialogOpen = false
   let isMoreDataFetching = false
@@ -42,7 +43,8 @@
       u.searchParams.set('cursor', cursor)
       const response = await fetch(u, { method: 'GET' })
       const newData = await response.json()
-      data.movements = [...data.movements, ...newData]
+      data.isMore = newData.isMore
+      data.movements = [...data.movements, ...newData.movements]
     } catch (error) {
       console.error(error)
     } finally {
@@ -54,9 +56,8 @@
     const threshold = 500 // How close to the bottom you must be to load more posts (in pixels)
     const position = scrollY + innerHeight // How far the user has scrolled
     const bottom = document.body.scrollHeight // The total scrollable height
-    if (position + threshold >= bottom) {
+    if (position + threshold >= bottom && data.isMore) {
       loadMorePosts()
-      return
     }
   }, 2000)
 

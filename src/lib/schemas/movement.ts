@@ -7,4 +7,7 @@ export const MovementResultSchema = z.object({
   images: z.array(z.object({ id: z.string(), altText: z.string() }))
 })
 
-export const MovementsResultSchema = z.array(MovementResultSchema)
+export const MovementsResultSchema = z.object({
+  isMore: z.boolean(),
+  movements: z.array(MovementResultSchema)
+})
