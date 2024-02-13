@@ -1,11 +1,12 @@
 <script lang="ts">
-  import type { load } from './+page.server'
   import * as Dialog from '$lib/components/ui/dialog'
   import { Play } from 'lucide-svelte'
   import { page } from '$app/stores'
   import { goto, preloadData, pushState } from '$app/navigation'
   import { throttle } from '$lib/utils/misc'
   import MovementPage from './[movementId]/+page.svelte'
+  import SearchBar from '$lib/components/search-bar.svelte'
+  import type { load } from './+page'
 
   export let data: Awaited<ReturnType<typeof load>>
 
@@ -36,6 +37,8 @@
 
     try {
       const u = new URL(`${$page.url.origin}/api/movements`)
+      const q = $page.url.searchParams.get('q')
+      q && u.searchParams.set('q', q)
       u.searchParams.set('cursor', cursor)
       const response = await fetch(u, { method: 'GET' })
       const newData = await response.json()
@@ -71,7 +74,10 @@
 <svelte:window bind:innerHeight bind:scrollY on:scroll={throttledHandleScroll} />
 
 <div class="px-8 py-4 md:container md:mx-auto">
-  <a href="../" class="mb-8">Back</a>
+  <div class="container mb-20 mt-36 flex flex-col items-center justify-center gap-6">
+    <h1 class="text-h1">Epic Dance Steps</h1>
+    <SearchBar />
+  </div>
   <ul class="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-[repeat(3,_minmax(250px,_1fr))]">
     {#each data.movements as movement}
       <a
@@ -95,7 +101,7 @@
           </div>
         </figure>
         <div class="px-4 py-4 bg-primary rounded-b-xl">
-          <p class="font-bold text-gray-50">{movement.name}</p>
+          <p class="text-p text-gray-50">{movement.name}</p>
         </div>
       </a>
     {/each}
