@@ -9,7 +9,6 @@
   import type { load } from './+page'
 
   export let data: Awaited<ReturnType<typeof load>>
-  console.log(data)
 
   let dialogOpen = false
   let isMoreDataFetching = false
@@ -37,7 +36,8 @@
     }
 
     try {
-      const u = new URL(`${$page.url.origin}/api/movements`)
+      console.log($page)
+      const u = new URL(`${$page.url.origin}/api/movements/${$page.params.name}`)
       const q = $page.url.searchParams.get('q')
       q && u.searchParams.set('q', q)
       u.searchParams.set('cursor', cursor)

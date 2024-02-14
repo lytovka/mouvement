@@ -8,6 +8,10 @@ export const prisma = new PrismaClient({
   ]
 })
 
+prisma.$on('query', async e => {
+  // console.info(`prisma:query - ${e.duration} - ${e.query}`)
+})
+
 async function main() {}
 
 main()

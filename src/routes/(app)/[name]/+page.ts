@@ -2,8 +2,8 @@ import { error } from '@sveltejs/kit'
 import { MovementsResultSchema } from '$lib/schemas/movement'
 import type { PageLoad } from './$types'
 
-export const load = (async ({ url, fetch }) => {
-  const u = new URL(`${url.origin}/api/movements`)
+export const load = (async ({ url, params, fetch }) => {
+  const u = new URL(`${url.origin}/api/movements/${params.name}`)
 
   const cursor = url.searchParams.get('cursor')
   const q = url.searchParams.get('q')

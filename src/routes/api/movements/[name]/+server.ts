@@ -6,7 +6,7 @@ const PAGE_LIMIT = 10
 export const GET = (async ({ params, url }) => {
   const cursor = url.searchParams.get('cursor')
   const q = url.searchParams.get('q')
-
+  console.log(url)
   const movements = await prisma.movement.findMany({
     take: PAGE_LIMIT + 1,
     cursor: cursor ? { id: cursor } : undefined,
