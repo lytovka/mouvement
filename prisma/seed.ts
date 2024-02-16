@@ -51,7 +51,7 @@ async function seedStyles() {
         slug: toUrlFriendlySubpath(styles[i % totalStyles]),
         img: { create: stylesImages[i % totalStyles] },
         movements: {
-          create: Array.from({ length: faker.number.int({ min: 10, max: 100 }) }).map(() => ({
+          create: Array.from({ length: faker.number.int({ min: 10, max: 15 }) }).map(() => ({
             name: faker.lorem.words({ min: 1, max: 6 }),
             content: faker.lorem.paragraphs({ min: 1, max: 3 }),
             images: {
@@ -84,6 +84,7 @@ async function seed() {
 
   console.time('🧹 Cleaned up the database...')
   await prisma.style.deleteMany()
+  await prisma.movement.deleteMany()
   console.timeEnd('🧹 Cleaned up the database...')
   await seedStyles()
 }
