@@ -1,9 +1,8 @@
-import { prisma } from '$lib/server/db'
+import type { StylesType } from '../api/styles/+server'
 import type { PageServerLoad } from './$types'
 
-export const load = (async () => {
-  const danceStyles = await prisma.style.findMany({
-    select: { id: true, name: true, slug: true, img: { select: { id: true, altText: true } } }
-  })
-  return { danceStyles }
+export const load = (async ({ fetch }) => {
+  return fetch(`/api/styles`, { method: 'GET' }).then(response =>
+    response.json()
+  ) as Promise<StylesType>
 }) satisfies PageServerLoad

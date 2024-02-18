@@ -1,10 +1,12 @@
-import { prisma } from '$lib/server/db'
+import { MovementMarkdownResultSchema } from '$lib/schemas/movement'
+import { error } from 'console'
 import type { PageServerLoad } from './$types'
 
 export const load = (async ({ params }) => {
-  const movement = await prisma.movement.findUnique({
-    select: { name: true, content: true, images: { select: { id: true, altText: true } } },
-    where: { id: params.movementId }
-  })
-  return { movement }
+  const content = await import(`../../../../content/styles/${params.name}/${params.movementId}.md`)
+  const response = MovementMarkdownResultSchema.safeParse(content.metadata)
+  if (!response.success) {
+    return error(400, 'Invalid data parsed')
+  }
+  return { movement: response.data }
 }) satisfies PageServerLoad

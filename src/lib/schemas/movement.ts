@@ -8,6 +8,20 @@ export const MovementResultSchema = z.object({
 })
 
 export const MovementsResultSchema = z.object({
-  isMore: z.boolean(),
   movements: z.array(MovementResultSchema)
+})
+
+export const ImageSchema = z.object({ altText: z.string(), src: z.string() })
+
+export const ImagesSchema = z.array(ImageSchema)
+
+export const MovementMarkdownResultSchema = z.object({
+  id: z.string(),
+  title: z.string(),
+  slug: z.string(),
+  images: ImagesSchema
+})
+
+export const MovementsMarkdownResultSchema = z.object({
+  movements: z.array(MovementMarkdownResultSchema)
 })

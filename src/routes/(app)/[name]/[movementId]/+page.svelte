@@ -9,11 +9,11 @@
 
 <div class={cn('flex flex-col items-center justify-center p-4', containerStyles)}>
   <div class="max-w-[700px]">
-    <h1>{data.movement?.name}</h1>
+    <h1>{data.movement?.title}</h1>
     <div class="min-h-96 flex flex-col justify-center items-center">
       <img
         class="max-h-96 w-full object-fill"
-        src={`/api/movement-images/${data.movement?.images[0].id}/webp`}
+        src={data.movement?.images[0].src}
         alt={data.movement?.images[0].altText}
       />
     </div>

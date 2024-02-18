@@ -1,22 +1,15 @@
 import { error } from '@sveltejs/kit'
-import { MovementsResultSchema } from '$lib/schemas/movement'
+import { MovementsMarkdownResultSchema } from '$lib/schemas/movement'
 import type { PageLoad } from './$types'
 
 export const load = (async ({ url, params, fetch }) => {
-  const u = new URL(`${url.origin}/api/movements/${params.name}`)
-
-  const cursor = url.searchParams.get('cursor')
-  const q = url.searchParams.get('q')
-
-  q && u.searchParams.set('q', encodeURIComponent(q))
-  cursor && u.searchParams.set('cursor', encodeURIComponent(cursor))
-
-  const movementsResponse = await fetch(u.toString(), { method: 'GET' })
-
-  const result = MovementsResultSchema.safeParse(await movementsResponse.json())
+  console.log('inside load')
+  const u = new URL(`${url.origin}/api/styles/${params.name}`)
+  const movements = await fetch(u.toString(), { method: 'GET' }).then(response => response.json())
+  console.log('heeey', movements)
+  const result = MovementsMarkdownResultSchema.safeParse(movements)
   if (!result.success) {
     return error(400, result.error.message)
   }
-
   return result.data
 }) satisfies PageLoad

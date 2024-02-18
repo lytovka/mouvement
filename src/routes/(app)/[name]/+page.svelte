@@ -9,7 +9,6 @@
   import type { load } from './+page'
 
   export let data: Awaited<ReturnType<typeof load>>
-
   let dialogOpen = false
   let isMoreDataFetching = false
 
@@ -43,7 +42,6 @@
       u.searchParams.set('cursor', cursor)
       const response = await fetch(u, { method: 'GET' })
       const newData = await response.json()
-      data.isMore = newData.isMore
       data.movements = [...data.movements, ...newData.movements]
     } catch (error) {
       console.error(error)
@@ -56,7 +54,7 @@
     const threshold = 500 // How close to the bottom you must be to load more posts (in pixels)
     const position = scrollY + innerHeight // How far the user has scrolled
     const bottom = document.body.scrollHeight // The total scrollable height
-    if (position + threshold >= bottom && data.isMore) {
+    if (position + threshold >= bottom) {
       loadMorePosts()
     }
   }, 2000)
@@ -82,7 +80,7 @@
   <ul class="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-[repeat(3,_minmax(250px,_1fr))]">
     {#each data.movements as movement}
       <a
-        href={`${$page.url.pathname}/${movement.id}`}
+        href={`${$page.url.pathname}/${movement.slug}`}
         on:click={onImageClick}
         class="group relative flex flex-col bg-primary shadow-md bg-clip-border rounded-xl"
       >
@@ -95,14 +93,14 @@
           <div class="md:h-64 figure-container overflow-hidden rounded-t-xl">
             <img
               class="h-auto w-auto object-cover transition-all ease-in-out duration-500 group-hover:scale-105"
-              src={`/api/movement-images/${movement.images[0].id}/png`}
+              src={movement.images[0].src}
               loading="lazy"
               alt={movement.images[0].altText}
             />
           </div>
         </figure>
         <div class="px-4 py-4 bg-primary rounded-b-xl">
-          <p class="text-p text-gray-50">{movement.name}</p>
+          <p class="text-p text-gray-50">{movement.title}</p>
         </div>
       </a>
     {/each}
