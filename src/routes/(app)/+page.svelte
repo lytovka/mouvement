@@ -3,7 +3,6 @@
   import type { load } from './+page.server'
 
   export let data: Awaited<ReturnType<typeof load>>
-  console.log(data)
 </script>
 
 <div>

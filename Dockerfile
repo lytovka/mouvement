@@ -47,10 +47,6 @@ RUN apt-get update -qq && \
 # Copy built application
 COPY --from=build /app /app
 
-# Entrypoint prepares the database.
-ENTRYPOINT [ "/app/docker-entrypoint.js" ]
-
 # Start the server by default, this can be overwritten at runtime
 EXPOSE 3000
-ENV DATABASE_URL="file:///app/prisma/dev.db"
 CMD [ "npm", "run", "start" ]

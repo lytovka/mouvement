@@ -11,6 +11,7 @@
   export let data: Awaited<ReturnType<typeof load>>
   let dialogOpen = false
   let isMoreDataFetching = false
+  console.log(import.meta.env)
 
   const onImageClick = async (event: MouseEvent & { currentTarget: HTMLAnchorElement }) => {
     if (event.metaKey || event.ctrlKey) return
@@ -35,7 +36,6 @@
     }
 
     try {
-      console.log($page)
       const u = new URL(`${$page.url.origin}/api/movements/${$page.params.name}`)
       const q = $page.url.searchParams.get('q')
       q && u.searchParams.set('q', q)

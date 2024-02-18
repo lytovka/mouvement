@@ -9,8 +9,8 @@
 
   async function handleInput(e: Event) {
     query = (e.target as HTMLInputElement).value.trim()
-    const searchParam = query ? `?${new URLSearchParams({q: encodeURIComponent(query)})}` : null
-    await goto(searchParam ? searchParam: $page.url.pathname, {
+    const searchParam = query ? `?${new URLSearchParams({ q: encodeURIComponent(query) })}` : null
+    await goto(searchParam ? searchParam : $page.url.pathname, {
       noScroll: true,
       keepFocus: true
     })
