@@ -11,7 +11,6 @@ const loadMarkdownModules = (params: RouteParams) => {
   const isDev = import.meta.env.DEV
   let paths
   if (isDev) {
-    console.log('import modules for dev')
     switch (params.name) {
       case 'hip-hop': {
         paths = import.meta.glob('/src/content/styles-dev/hip-hop/*.md')
@@ -52,16 +51,17 @@ const loadMarkdownModules = (params: RouteParams) => {
   return paths
 }
 
-export const GET = (async ({ params }) => {
+export const GET = (async ({ url, params }) => {
   const paths = loadMarkdownModules(params)
+  const q = url.searchParams.get('q')
   const metadatas = []
   for (const path in paths) {
-    console.log((await paths[path]()).metadata)
     const fileResponse = MarkdownFileSchema.safeParse(await paths[path]())
     if (!fileResponse.success) {
       return error(400, fileResponse.error.message)
     }
     metadatas.push(fileResponse.data.metadata)
   }
-  return json({ movements: metadatas })
+  const res = q ? metadatas.filter(m => m.title.startsWith(q)) : metadatas
+  return json({ movements: res })
 }) satisfies RequestHandler
